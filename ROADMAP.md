@@ -12,6 +12,14 @@
 - maintainer publishing helper;
 - no real personal brain data.
 
+## Maintenance policy
+
+- Keep v0.1 stable; prioritize security, packaging, documentation, and reproducible bug fixes over speculative features.
+- Never automatically sync a maintainer's private `brain/`, archives, telemetry events, credentials, or project data into this public repository.
+- Develop reusable changes against synthetic/example data and require the public CI to pass before treating them as releasable.
+- Add runtime features only when repeated real use or tester feedback shows that the private implementation contains a genuinely reusable pattern.
+- Version breaking schema/import changes explicitly instead of silently changing existing private brains.
+
 ## v0.2 — Generic retrieval runtime
 
 Extract the reusable subset of the private MCP runtime without user-specific assumptions:
