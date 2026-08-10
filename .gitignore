@@ -1,0 +1,24 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local exports / sensitive bootstrap inputs
+notebooklm-export*.md
+exports/
+raw/
+vault/
+secrets/
+*.env
+.env.*
+.dev.vars
+
+# Temporary/private generated workspace when testing this starter
+.local-brain/
+.tmp/

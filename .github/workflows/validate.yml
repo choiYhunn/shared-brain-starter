@@ -1,0 +1,25 @@
+name: Validate Shared Brain Starter
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Compile Python tools
+        run: python -m py_compile scripts/import_notebooklm.py scripts/validate_brain.py
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: End-to-end bootstrap smoke test
+        run: |
+          python scripts/import_notebooklm.py examples/notebooklm-export.example.md --root .tmp/example-brain
+          python scripts/validate_brain.py .tmp/example-brain
