@@ -11,6 +11,7 @@ __pycache__/
 
 # Local exports / sensitive bootstrap inputs
 notebooklm-export*.md
+!examples/notebooklm-export.example.md
 exports/
 raw/
 vault/
