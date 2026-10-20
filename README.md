@@ -47,6 +47,16 @@ The operating principles are:
 powershell -ExecutionPolicy Bypass -File .\scripts\init-personal-brain.ps1 -TargetDir "$HOME\my-shared-brain"
 ```
 
+On Linux or macOS (no PowerShell), the same skeleton can be created by hand. The PowerShell script additionally writes a private `README.md` and a `.gitignore` that excludes `raw/`, `vault/`, `secrets/`, `exports/`, and `.env*`; add an equivalent `.gitignore` before your first commit.
+
+```bash
+BRAIN="$HOME/my-shared-brain"
+mkdir -p "$BRAIN/brain"
+cp -R templates/brain/. "$BRAIN/brain/"
+mkdir -p "$BRAIN"/{brain/knowledge,brain/academics,brain/career,brain/memory,sources,inbox/pending}
+python3 scripts/validate_brain.py "$BRAIN"
+```
+
 ### 2. Build a private NotebookLM notebook
 
 Upload only sources you are allowed to process. Keep the notebook private. Then use the prompt in `bootstrap/NOTEBOOKLM_BOOTSTRAP_PROMPT.md`.
@@ -76,6 +86,19 @@ If you use GitHub CLI:
 ```powershell
 gh repo create my-shared-brain --private --source . --remote origin --push
 ```
+
+## Verify this starter
+
+These are the same checks the GitHub Actions workflow runs (`.github/workflows/validate.yml`); they need only Python 3 and no network access.
+
+```bash
+python3 -m py_compile scripts/import_notebooklm.py scripts/validate_brain.py
+python3 -m unittest discover -s tests -p 'test_*.py'          # importer safety tests
+python3 scripts/import_notebooklm.py examples/notebooklm-export.example.md --root .tmp/example-brain
+python3 scripts/validate_brain.py .tmp/example-brain           # expected: PASS: 0 blocking issues
+```
+
+The example export is synthetic. The importer refuses path traversal, duplicate paths, and text outside the documented file blocks; the validator checks required files, path policy, obvious secret patterns, and file sizes. A PASS does not prove that the content is factually correct.
 
 ## Recommended hierarchy
 
